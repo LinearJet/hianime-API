@@ -1,0 +1,32 @@
+# render.yaml
+# Blueprint for deploying the hianime-API on Render.
+# For more information, see https://render.com/docs/blueprint-spec
+
+services:
+  # A Web Service for the hianime-API
+  - type: web
+    name: hianime-api
+    # Use the 'bun' runtime, as specified in the repository prerequisites
+    runtime: bun
+    # The public repository URL
+    repo: https://github.com/yahyaMomin/hianime-API.git
+    # Set to 'true' to automatically deploy new commits to the main branch
+    autoDeploy: true
+    # The command to install dependencies, as per the README
+    buildCommand: "bun install"
+    # The command to start the server. The README specifies 'bun run dev'.
+    # For production, it's often better to use a 'bun run start' script if available.
+    startCommand: "bun run dev"
+    # Set the plan. 'free' is suitable for personal use and testing.
+    plan: free
+    # Health check path to ensure the service is running correctly.
+    # Uses the /api/v1/home endpoint which should return a successful response.
+    healthCheckPath: /api/v1/home
+    # Environment variables section.
+    # Render automatically sets the PORT variable. The application must listen on process.env.PORT.
+    # Add other required environment variables from the .env.example file here.
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # - key: ANOTHER_VARIABLE  # Example: Add other keys from .env.example
+      #   value: "your-value"
